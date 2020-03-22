@@ -1,17 +1,3 @@
-# def server_command(cmd):
-#     process.stdin.write(cmd+"\n") #just write the command to the input stream
-#     process = None
-#     executable = '"C:/Program Files/Java/jre1.8.0_191/bin/java.exe" -Xms4G -Xmx4G -jar "D:/gd/minecraft_1.15.2/server (6).jar" nogui java'
-#     while True:
-#         command=input()
-#         command=command.lower()
-#         if process is not None:
-#             if command==("start"):
-#                 os.chdir(minecraft_dir)
-#                 process = subprocess.Popen(executable, stdin=subprocess.PIPE)
-#                 print("Server started.")
-#         else:
-#             server_command(command)
 
 import socket
 import os
@@ -375,11 +361,14 @@ while True:
     elif msg[0]=="update_teams": 
         test.check_players()
     elif msg[0]=="worldborder_start":
-        test.worldborder_start_size=int(msg[1])
+    	if isinstance(msg[1],int):
+        	test.worldborder_start_size=int(msg[1])
     elif msg[0]=="worldborder_end":
-        test.worldborder_end_size=int(msg[1])
+    	if isinstance(msg[1],int):
+        	test.worldborder_end_size=int(msg[1])
     elif msg[0]=="worldborder_time_move":
-        test.worldborder_collapse_time=int(msg[1])
+    	if isinstance(msg[1],int):
+        	test.worldborder_collapse_time=int(msg[1])
     elif msg[0]=="start_game":
         test.start_match()
     temp_teams=copy.deepcopy(test.teams)
