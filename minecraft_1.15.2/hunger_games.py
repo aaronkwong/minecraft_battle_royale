@@ -28,7 +28,7 @@ def capture_player_list(mc_server):
         mc_server.sendline('/list')
         time.sleep(0.2)
         player_list=mc_server.read_nonblocking()
-        if ('20 players online:' in player_list) and (not('lost connection: Disconnected' in player_list)) and (not('the game' in player_list)) and player_list.count("[Server thread/INFO]")==1:
+        if ('20 players online:' in player_list) and (not('lost connection: Disconnected' in player_list)) and (not('the game' in player_list)) and player_list.count("[Server thread/INFO]")==1 and (not("Can't keep up!" in player_list)):
             print(player_list)
             start=player_list.find('20 players online:')+len('20 players online:')+1
             end=player_list.rfind('\r\n')
@@ -191,6 +191,11 @@ def calculate_teams_and_spawns(team_data,worldborder_center,worldborder_start_si
         xlow=worldborder_center[0]-(worldborder_start_size/2)
         yhigh=worldborder_center[1]+(worldborder_start_size/2)
         ylow=worldborder_center[1]-(worldborder_start_size/2)
+        #lets make these a little closer in from the corner
+        xhigh=xhigh-10
+        xlow=xlow+10
+        yhigh=yhigh-10
+        ylow=ylow+10
         loc_1=[xhigh,ylow]
         loc_2=[xlow,yhigh]
         loc_3=[xlow,ylow]
@@ -220,6 +225,7 @@ class player:
         self.initiate_match_teams_spawn_locations=[]
         self.total_players=[]
         self.check_players_time=0
+        self.last_initiated=0
     def check_players(self):
         if (time.time()-self.check_players_time)>1:
             try:
@@ -260,47 +266,57 @@ class player:
         print(self.total_players)
         # del self.total_players[0]
     def start_match(self):
-        self.mc_server.sendline('/say Command to Initiate Match Received.')
-        self.mc_server.sendline('/say Calculating teams and spawn locations...')
-        self.mc_server.sendline('/say Assigning players to their teams...')
-        self.pre_match_calc()
-        self.make_teams()
-        self.mc_server.sendline('/say Killing All Players in 10 seconds... Please Respawn to be Full Health')
-        time.sleep(10)
-        kill_all_players(mc_server=self.mc_server)
-        self.mc_server.sendline('/say Teleporting teams to their respective start locations in 5 seconds...')
-        time.sleep(5)
-        set_world_border(mc_server=self.mc_server,worldborder_size=self.worldborder_start_size,time="")
-        #
-        #make all players creative before the jump
-        for sublist in self.total_players:
-            for indiv_player in sublist:
-                change_player_gamemode(mc_server=self.mc_server,player_name=indiv_player,mode="creative")
-        print("creative")
-        #
-        #teleport teams to staarting
-        x=0
-        for sublist in self.total_players:
-            for indiv_player in sublist:
-                teleport_player(mc_server=self.mc_server,player_name=indiv_player,x=self.initiate_match_teams_spawn_locations[int(x)][0],y=200,z=self.initiate_match_teams_spawn_locations[int(x)][1])
-                print(indiv_player)
-                print(self.initiate_match_teams_spawn_locations[int(x)][0],self.initiate_match_teams_spawn_locations[int(x)][0])
+        if time.time()-self.last_initiated>300:
+            self.mc_server.sendline('/say Command to Initiate Match Received.')
+            self.mc_server.sendline('/say Calculating teams and spawn locations...')
+            self.mc_server.sendline('/say Assigning players to their teams...')
+            self.pre_match_calc()
+            self.make_teams()
+            self.mc_server.sendline('/say Killing All Players in 10 seconds... Please Respawn to be Full Health')
+            time.sleep(10)
+            kill_all_players(mc_server=self.mc_server)
+            self.mc_server.sendline('/say Teleporting teams to their respective start locations in 5 seconds...')
+            time.sleep(5)
+            set_world_border(mc_server=self.mc_server,worldborder_size=self.worldborder_start_size,time="")
+            #
+            for sublist in self.total_players:
+                for indiv_player in sublist:
+                    change_player_gamemode(mc_server=self.mc_server,player_name=indiv_player,mode="survival")
+            print("creative")
+            time.sleep(2)
+            #make all players creative before the jump
+            for sublist in self.total_players:
+                for indiv_player in sublist:
+                    change_player_gamemode(mc_server=self.mc_server,player_name=indiv_player,mode="creative")
+            print("creative")
+            #
+            #teleport teams to staarting
+            x=0
+            for sublist in self.total_players:
+                for indiv_player in sublist:
+                    teleport_player(mc_server=self.mc_server,player_name=indiv_player,x=self.initiate_match_teams_spawn_locations[int(x)][0],y=200,z=self.initiate_match_teams_spawn_locations[int(x)][1])
+                    print(indiv_player)
+                    print(self.initiate_match_teams_spawn_locations[int(x)][0],self.initiate_match_teams_spawn_locations[int(x)][0])
+                x=x+1
+            time.sleep(20)
+            print("teleport")
+            #
+            #after players survive the fall turn them back to survival
+            #make all players creative before the jump
+            x=0
+            for sublist in self.total_players:
+                for indiv_player in sublist:
+                    change_player_gamemode(mc_server=self.mc_server,player_name=indiv_player,mode="survival")
+                    print(indiv_player)
             x=x+1
-        time.sleep(10)
-        print("teleport")
-        #
-        #after players survive the fall turn them back to survival
-        #make all players creative before the jump
-        x=0
-        for sublist in self.total_players:
-            for indiv_player in sublist:
-                change_player_gamemode(mc_server=self.mc_server,player_name=indiv_player,mode="survival")
-                print(indiv_player)
-        x=x+1
-        set_world_border(mc_server=self.mc_server,worldborder_size=self.worldborder_end_size,time=self.worldborder_collapse_time)
-        self.initiate_match_teams_indexes=[]
-        self.initiate_match_teams_spawn_locations=[]
-        self.total_players=[]
+            self.mc_server.sendline('/say Worldborders will begin to shrink in 1 minutes...')
+            time.sleep(60)
+            set_world_border(mc_server=self.mc_server,worldborder_size=self.worldborder_end_size,time=self.worldborder_collapse_time)
+            self.initiate_match_teams_indexes=[]
+            self.initiate_match_teams_spawn_locations=[]
+            self.total_players=[]
+            self.last_initiated=time.time()
+
 
 
 
@@ -348,32 +364,47 @@ s.listen(1)
 test=player()
 time.sleep(5)
 while True:
-    clientsocket, addr = s.accept()
-    print("computer",{addr},"coonected.")
-    msg=clientsocket.recv(1024)
-    msg=json.loads(msg.decode("utf-8"))
-    if msg[0]=="ch_team":
-        #xtract list of player to be moved
-        player_move=msg[2][:-1]
-        player_move=player_move.split(" ")
-        for player in player_move:
-            test.move_player(player_to_move=player,new_team=int(msg[1]))
-    elif msg[0]=="update_teams": 
-        test.check_players()
-    elif msg[0]=="worldborder_start":
-    	if isinstance(msg[1],int):
-        	test.worldborder_start_size=int(msg[1])
-    elif msg[0]=="worldborder_end":
-    	if isinstance(msg[1],int):
-        	test.worldborder_end_size=int(msg[1])
-    elif msg[0]=="worldborder_time_move":
-    	if isinstance(msg[1],int):
-        	test.worldborder_collapse_time=int(msg[1])
-    elif msg[0]=="start_game":
-        test.start_match()
-    temp_teams=copy.deepcopy(test.teams)
-    temp_teams.append([test.worldborder_start_size,test.worldborder_end_size,test.worldborder_collapse_time])
-    to_send=temp_teams
-    # to_send=test.teams
-    clientsocket.sendall(bytes(json.dumps(to_send),encoding="utf-8"))
+    try:
+        clientsocket, addr = s.accept()
+        print("computer",{addr},"coonected.")
+        msg=clientsocket.recv(1024)
+        msg=json.loads(msg.decode("utf-8"))
+        if msg[0]=="ch_team":
+            try:
+                #xtract list of player to be moved
+                player_move=msg[2][:-1]
+                player_move=player_move.split(" ")
+                for player in player_move:
+                    test.move_player(player_to_move=player,new_team=int(msg[1]))
+            except:
+                print("Error in moving player.")
+        elif msg[0]=="update_teams": 
+            test.check_players()
+        elif msg[0]=="worldborder_start":
+            try:
+                test.worldborder_start_size=int(msg[1])
+            except:
+                print("worldborder start size is not a number.")
+        elif msg[0]=="worldborder_end":
+            try:
+                test.worldborder_end_size=int(msg[1])
+            except:
+                print("worldborder end size is not a number.")
+        elif msg[0]=="worldborder_time_move":
+            try:
+                test.worldborder_collapse_time=int(msg[1])
+            except:
+                print("worldborder collapse time is not a number.")
+        elif msg[0]=="start_game":
+            try:
+                test.start_match()
+            except:
+                print("error starting match")
+        temp_teams=copy.deepcopy(test.teams)
+        temp_teams.append([test.worldborder_start_size,test.worldborder_end_size,test.worldborder_collapse_time])
+        to_send=temp_teams
+        # to_send=test.teams
+        clientsocket.sendall(bytes(json.dumps(to_send),encoding="utf-8"))
+    except:
+        test.stop_pserver()
     
