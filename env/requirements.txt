@@ -1,0 +1,13 @@
+certifi==2019.11.28
+click==7.1.2
+Flask==1.1.2
+itsdangerous==1.1.0
+Jinja2==2.11.2
+MarkupSafe==1.1.1
+numpy==1.18.2
+psutil==5.7.0
+pywin32==227
+waitress==1.4.4
+Werkzeug==1.0.1
+wexpect==3.3.0
+wincertstore==0.2
