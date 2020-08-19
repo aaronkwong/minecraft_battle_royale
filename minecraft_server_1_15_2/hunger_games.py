@@ -31,7 +31,7 @@ else:
     print("You did not select whether the server is vanilla or modded.")
     quit()
 
-subprocess.Popen(['python',os.path.dirname(os.getcwd())+"\\huner_games\\hello.py"],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+subprocess.Popen(['python',os.path.dirname(os.getcwd())+"\\huner_games_server\\battle_royale_server.py"],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 
 #this function takes a wexpect connection and returns the player list
 #need to adda try catch to this
