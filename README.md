@@ -20,4 +20,4 @@ python hunger_games.py v
 Assuming you know how to set up your own minecraft server already. Working on python 3.7.5 with minecraft 1.15.2
 
 ## How it Works
-![](img/flow.jpg)
+![](img/flow.JPG)
