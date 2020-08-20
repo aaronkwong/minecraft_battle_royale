@@ -18,6 +18,8 @@ python hunger_games.py v
 
 ## Getting Started
 Assuming you know how to set up your own minecraft server already. Working on python 3.7.5 with minecraft 1.15.2
+![](img/webpage_interface.JPG)
+![](img/in_game.png)
 
 ## How it Works
 ![](img/flow.JPG)
