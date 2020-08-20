@@ -12,6 +12,7 @@ import subprocess
 import time
 from threading import Thread
 import argparse
+import time
 
 #select whether this is a vanilla or modded server
 parser=argparse.ArgumentParser()
@@ -31,7 +32,8 @@ else:
     print("You did not select whether the server is vanilla or modded.")
     quit()
 
-subprocess.Popen(['python',os.path.dirname(os.getcwd())+"\\huner_games_server\\battle_royale_server.py"],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+print("Starting up web interface...\n")
+subprocess.Popen(['python',os.path.dirname(os.getcwd())+"\\hunger_games_server\\battle_royale_server.py"],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 
 #this function takes a wexpect connection and returns the player list
 #need to adda try catch to this
@@ -70,7 +72,7 @@ def capture_player_list_modded_server(mc_server):
         test.mc_server.sendline('/list')
         time.sleep(0.1)
         player_list=test.mc_server.read_nonblocking()
-        print(player_list)
+        # print(player_list)
         if ('players online:' in player_list) and (not('lost connection: Disconnected' in player_list)) and (not('the game' in player_list)) and player_list.count("[Server thread/INFO]")==2 and (not("Can't keep up!" in player_list)) and (not("Mismatch in destroy" in player_list)) and (not("Fetching packet for" in player_list)) and (not('moved too quickly!' in player_list)) and (not('moved wrongly!' in player_list)) and (not("Can't keep up!" in player_list)):
             try:
                 # the modded server prints out two lines in response so take the second line which contaions the player names
@@ -165,7 +167,7 @@ def check_current_login(mc_server,accounted,team_data):
         active_players=capture_player_list_modded_server(mc_server)
     else:
         active_players=capture_player_list(mc_server)
-    print(active_players)
+    # print(active_players)
     #find any players that are new logins
     player_unaccounted=[]
     for i in active_players:
@@ -185,7 +187,7 @@ def check_current_login(mc_server,accounted,team_data):
     player_logged=np.array(accounted)[np.array(player_left)]
     #print(len(player_logged))
     if not(len(player_logged)==0):
-        print("player left!")
+        print("Player change detected!")
         for player in player_logged:
             #need add a function to find where the person is if they moved a team already
             a,b=find_member_on_team(team_data,player)
@@ -497,6 +499,7 @@ PORT = 50008              # Arbitrary non-privileged port
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((HOST, PORT))
 s.listen(1)
+print("starting minecraft server...\n")
 test=player()
 time.sleep(5)
 
@@ -568,25 +571,9 @@ def main_function(test=test):
             print("esleeeeeeeee")
             time.sleep(0.1)
 
+print("Game monitoring...ACTIVE")
 myvar="0"
-
 t=Thread(target=main_function)
 t.start()
 
-# def ask_input():
-#     global myvar
-#     response=input()
-#     if response=="stop":
-#         myvar="stop"
-#     if response=="quit":
-#         myvar="stop"
-#         time.sleep(2)
-#         quit()
 
-# #alright. Unusual bug here, somehow wexpect makes use of stdin which is triggering EOF(when the main_function runs). Can overcome this by try and excepting the errors untill a real user input is provided. Pretty sloppy workaround.
-# time.sleep(2)
-# while True:
-#     try:
-#         ask_input()
-#     except:
-#         pass
