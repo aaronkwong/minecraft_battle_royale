@@ -13,10 +13,10 @@ import time
 from threading import Thread
 import argparse
 
+#select whether this is a vanilla or modded server
 parser=argparse.ArgumentParser()
-#
 parser.add_argument("mod_status",
-    default=False,
+    default="v",
     nargs='?',
     help="Please indicate whether the server is modded (m) or vanilla (v).")
 
