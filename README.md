@@ -1,5 +1,5 @@
-# Simple Minecraft Battle Royale Server
-A python script which uses server commands to set up battle royale style game for you and your friends with a web interface. 
+# Minecraft Battle Royale Server
+A python script which uses minecraft server commands to set up battle royale style match for you and your friends. Controlled with an easy to use web interface. 
 
 ### Installing
 1. Download the minecraft server: https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar and place it in the "minecraft_server_1_15_2" directory.
@@ -18,3 +18,6 @@ python hunger_games.py v
 
 ## Getting Started
 Assuming you know how to set up your own minecraft server already. Working on python 3.7.5 with minecraft 1.15.2
+
+## How it Works
+![](img/flow.jpg)
