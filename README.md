@@ -13,13 +13,13 @@ Assuming you know how to set up your own minecraft server already. Working on py
 #set up a virtual enviornment
 python -m venv env
 #activate enviornment
-...\env\Scripts\activate
+...\smallsonsbattleroyale\env\Scripts\activate
 #update pip
 pip install --upgrade pip
 #install packages
 pip install -r .../smallsonsbattleroyale/env/requirements.txt
 ```
-4. Navigate to ./minecraft_server_1_15_2 and start the hunger games script.
+4. Navigate to ...\smallsonsbattleroyale\minecraft_server_1_15_2 and start the hunger games script.
 ```
 python hunger_games.py
 ```
