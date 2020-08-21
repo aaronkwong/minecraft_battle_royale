@@ -2,18 +2,24 @@
 A python script which uses minecraft server commands to set up battle royale style match for you and your friends. Controlled with an easy to use web interface. 
 
 ### Installing
-1. Download the minecraft server: https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar and place it in the "minecraft_server_1_15_2" directory.
-2. Start the server and accept the EULA
-3. Build python virtual enviornment and activate (make sure pip is updated)
+1. Download repository
+2. Download the minecraft server: https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar and add it to the "./smallsonsbattleroyale/minecraft_server_1_15_2" directory
+3. Start the server and accept the EULA
+4. Navigate to the repository root directory "./smallsonsbattleroyale/"
+4. Build a python virtual enviornment, activate and install modules from requirements.txt
 ```
+#set up a virtual enviornment
+python -m venv env
+#activate enviornment
+.\br_env\Scripts\activate
+#update pip
 pip install --upgrade pip
-pip install myenv
-source venv/bin/activate
-pip install -r requirements.txt
+#install packages
+pip install -r ./smallsonsbattleroyale/env/requirements.txt
 ```
-4. Start the server.
+4. Navigate to ./minecraft_server_1_15_2 and start the hunger games script.
 ```
-python hunger_games.py v
+python hunger_games.py
 ```
 
 ## Getting Started
