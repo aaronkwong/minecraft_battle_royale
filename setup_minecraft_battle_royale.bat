@@ -3,4 +3,7 @@ python -m venv env
 CALL .\env\Scripts\activate
 python -m pip install --upgrade pip
 pip install -r ./env/requirements.txt
+cd ./minecraft_server_1_15_2
+server.jar
+echo "Setup Complete."
 pause
