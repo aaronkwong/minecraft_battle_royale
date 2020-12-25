@@ -2,7 +2,8 @@
 A python script which uses minecraft server commands to set up battle royale style match for you and your friends. Controlled with an easy to use web interface. 
 
 ### Installing
-Assuming you know how to set up your own minecraft server already. Working on python 3.7.5 with minecraft 1.15.2
+For Windows 10. Assuming python is in your path.
+Working on python 3.7.5 with minecraft 1.15.2
 
 1. Run setup_minecraft_battle_royale.bat
 2. Navigate to ./minecraft_server_1_15_2 and accept the EULA
