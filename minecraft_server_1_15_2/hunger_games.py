@@ -485,14 +485,14 @@ class player:
         if self.end_time!=0 and time.time()-self.end_time>1:
             if self.end_time_intervention==0:
                 print("end time hit")
-                self.mc_server.sendline('/say Time is up! Spawning 5 zombies to your location in 10 minutes')
-                self.end_time_time_between_waves=time.time()+600
+                self.mc_server.sendline('/say Time is up! Spawning 5 zombies to your location in 3 minutes')
+                self.end_time_time_between_waves=time.time()+180
                 self.end_time_intervention=1
             elif self.end_time_intervention!=0 and time.time()-self.end_time_time_between_waves>1:
                 print("wave sent.")
                 self.end_time_intervention=spawn_zombies_blazes_wither(mc_server=self.mc_server,intervention_count=self.end_time_intervention)
-                self.end_time_time_between_waves=time.time()+60
-                self.mc_server.sendline('/say Next wave spawns in 60 seconds.')
+                self.end_time_time_between_waves=time.time()+180
+                self.mc_server.sendline('/say Next wave spawns in 3 minutes.')
 
 HOST = ''                 # Symbolic name meaning all available interfaces
 PORT = 50008              # Arbitrary non-privileged port
