@@ -454,7 +454,7 @@ class player:
                     give_player(mc_server=self.mc_server,player=indiv_player,item=self.item_pack[4],quantity=self.item_pack_number[4])
                     #give_player(mc_server=self.mc_server,player=indiv_player,item='minecraft:obsidian',quantity='4')
                     command_server(mc_server=self.mc_server,command='xp set '+indiv_player+' 30 levels')
-            time.sleep(6)
+            time.sleep(16)
             print("teleport")
             # command_server(mc_server=self.mc_server,command="forceload remove all")
             # command_server(mc_server=self.mc_server,command="forceload remove all")
