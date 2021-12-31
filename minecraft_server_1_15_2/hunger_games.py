@@ -279,7 +279,7 @@ def preload_chunks(mc_server,x1,z1,x2,z2):
 def spawn_zombies_blazes_wither(mc_server,intervention_count):
     number_zombies=3+intervention_count
     number_blazes=intervention_count-1
-    number_withers=intervention_count-3
+    number_withers=intervention_count-7
     #always spawn a creeper each round
     #command_server(mc_server=mc_server,command='execute at @e[gamemode=survival] run summon minecraft:creeper')
     time.sleep(1)
