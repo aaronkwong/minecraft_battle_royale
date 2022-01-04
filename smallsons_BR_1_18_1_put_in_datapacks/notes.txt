@@ -1,0 +1,6 @@
+-stone has 1/100 chance of dropping 1 diamond
+-most mobs and animals will have a:
+	-50% chance of dropping iron ingot
+	-40% chance of dropping diamond
+	-80% chance of dropping arrows
+
