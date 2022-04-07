@@ -395,6 +395,7 @@ class player:
             self.mc_server.sendline('/say Preloading spawn chunks. This will take some time...')
             self.pre_match_calc()
             self.make_teams()
+            self.end_time_intervention=0
             #use this time to preload chunks in preparation of the teleport. If you don't do this the server gets overloaded with everyone teleporting
             preload_buffer=50
             for loc in self.initiate_match_teams_spawn_locations:
